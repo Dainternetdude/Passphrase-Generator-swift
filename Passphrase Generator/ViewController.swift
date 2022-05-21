@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import Foundation
 
 // should be called MyViewController or something
 class ViewController: NSViewController, NSTextFieldDelegate {
@@ -16,7 +17,6 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 	
 	@IBOutlet weak var outputField: NSTextField!
 	@IBOutlet weak var entropyField: NSTextField!
-	var entropy: Int = 0
 	@IBOutlet weak var uppercaseCheckBox: NSButton!
 	var includeUppercase = true
 	@IBOutlet weak var numbersCheckBox: NSButton!
@@ -32,6 +32,10 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 	var uppercaseChars = [Character]()
 	var numberChars = [Character]()
 	var symbolChars = [Character]()
+	let lowercaseVowelChars = ["a", "e", "i", "o", "u", "y"]
+	let lowercaseConsonantChars = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z"]
+	let uppercaseVowelChars = ["A", "E", "I", "O", "U", "Y"]
+	let uppercaseConsonantChars = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Z"]
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,11 +158,21 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 	}
 	
 	func generateDictionaryPassphrase(_ strength: Int) -> String {
-		// generate dictionary-style passphrase
-		return lowercaseChars + "\n"
-		+ uppercaseChars + "\n"
-		+ numberChars + "\n"
-		+ symbolChars
+		let path = Bundle.main.path(forResource: "wordlist", ofType: "txt")!
+		let content = try! String(contentsOfFile: path, encoding: String.Encoding.utf8) // unsafe forced try
+		let words = content.components(separatedBy: "\n")
+		
+		let numberOfWords = strength + 3
+		
+		var output = ""
+		for i in 1...numberOfWords {
+			output += words[Int.random(in: 1...words.count) - 1]
+			output += i != numberOfWords ? " " : ""
+		}
+		
+		setEntropy(log2(pow(1000.0,  Double(numberOfWords))))
+		
+		return output
 	}
 	
 	func generateReadablePassphrase(_ strength: Int) -> String {
@@ -179,9 +193,7 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 				let char: Character = getRandomCharacter(true, includeUppercase, includeNumbers, includeSymbols)
 				output.append(char)
 			}
-			if i != blocks {
-				output.append("-")
-			}
+			output += i != blocks ? "-" : ""
 		}
 		
 		// add in special characters in case none got in
@@ -225,6 +237,11 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 			}
 		}
 		
+		let a = 26 + includeUppercase.intValue * 26 + includeNumbers.intValue * 10 + includeSymbols.intValue * 32
+		let b = blocks * 6
+		let c: Double = pow(Double(a), Double(b))
+		setEntropy(log2(c))
+		
 		return output
 	}
 	
@@ -245,6 +262,13 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 				return getRandomCharacter(lowercase, uppercase, numbers, symbols)
 		}
 		return num.toChar()
+	}
+	
+	func setEntropy(_ entropy: Double) {
+		var ent = entropy * 10
+		ent = ent.rounded()
+		ent /= 10
+		entropyField.stringValue = String(ent)
 	}
 }
 
