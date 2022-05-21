@@ -690,7 +690,7 @@
                         <subviews>
                             <textField toolTip="Passphrase preview" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fPQ-k5-dkj">
                                 <rect key="frame" x="20" y="201" width="441" height="21"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Hello World!" drawsBackground="YES" id="ZXB-Ht-NjR">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Hello World!" drawsBackground="YES" id="ZXB-Ht-NjR">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -702,6 +702,9 @@
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="uppercaseCheckBoxWasToggled:" target="XfG-lQ-9wD" id="Kcb-j6-8Nu"/>
+                                </connections>
                             </button>
                             <button verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Glh-5f-Rgu">
                                 <rect key="frame" x="18" y="154" width="82" height="18"/>
@@ -709,6 +712,9 @@
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="numbersCheckBoxWasToggled:" target="XfG-lQ-9wD" id="VGu-oi-c9s"/>
+                                </connections>
                             </button>
                             <button toolTip="Include symbols in the passphrase" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qsN-68-p4B">
                                 <rect key="frame" x="18" y="132" width="78" height="18"/>
@@ -716,6 +722,9 @@
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="symbolsCheckBoxWasToggled:" target="XfG-lQ-9wD" id="fEp-fc-2ts"/>
+                                </connections>
                             </button>
                             <textField toolTip="Bits of entropy" horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xKV-o1-H7b">
                                 <rect key="frame" x="18" y="232" width="13" height="16"/>
@@ -730,7 +739,10 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="440" id="WZM-48-NEr"/>
                                 </constraints>
-                                <sliderCell key="cell" alignment="left" maxValue="3" doubleValue="1" tickMarkPosition="below" numberOfTickMarks="4" allowsTickMarkValuesOnly="YES" sliderType="linear" id="F2n-Yb-gpU"/>
+                                <sliderCell key="cell" state="on" alignment="left" maxValue="3" doubleValue="1" tickMarkPosition="below" numberOfTickMarks="4" allowsTickMarkValuesOnly="YES" sliderType="linear" id="F2n-Yb-gpU"/>
+                                <connections>
+                                    <action selector="strengthWasChanged:" target="XfG-lQ-9wD" id="7Wf-Ix-jyM"/>
+                                </connections>
                             </slider>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="keH-Wz-MVL">
                                 <rect key="frame" x="19" y="91" width="31" height="14"/>
@@ -766,6 +778,9 @@
                                         <segment label="Random"/>
                                     </segments>
                                 </segmentedCell>
+                                <connections>
+                                    <action selector="typeWasChanged:" target="XfG-lQ-9wD" id="lcy-gd-CGq"/>
+                                </connections>
                             </segmentedControl>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Wc-5a-HS0">
                                 <rect key="frame" x="13" y="14" width="225" height="32"/>
@@ -773,6 +788,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="regenerateButtonWasPushed:" target="XfG-lQ-9wD" id="tPL-bf-pu5"/>
+                                </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Re-oc-ERn">
                                 <rect key="frame" x="244" y="13" width="224" height="32"/>
@@ -790,6 +808,9 @@
 DQ
 </string>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="copyButtonWasPushed:" target="XfG-lQ-9wD" id="PIT-Bi-8Ck"/>
+                                </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Ib-LB-uaQ">
                                 <rect key="frame" x="147" y="91" width="45" height="14"/>
@@ -837,6 +858,15 @@ DQ
                             <constraint firstItem="2Ib-LB-uaQ" firstAttribute="top" secondItem="Bk7-ct-5cZ" secondAttribute="bottom" id="xgi-UZ-ivr"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="entropyField" destination="xKV-o1-H7b" id="JUC-IS-aQY"/>
+                        <outlet property="numbersCheckBox" destination="Glh-5f-Rgu" id="gFH-rD-ZB5"/>
+                        <outlet property="outputField" destination="fPQ-k5-dkj" id="QdQ-Zb-tVC"/>
+                        <outlet property="strengthSlider" destination="Bk7-ct-5cZ" id="8jF-Un-z8o"/>
+                        <outlet property="symbolsCheckBox" destination="qsN-68-p4B" id="fE5-IB-fN4"/>
+                        <outlet property="typeSegmentedControl" destination="7ZF-8v-paN" id="I2J-ls-C33"/>
+                        <outlet property="uppercaseCheckBox" destination="PEg-2p-sfu" id="8aH-wy-Tl3"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
