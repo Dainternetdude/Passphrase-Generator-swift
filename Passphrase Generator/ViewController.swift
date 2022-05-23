@@ -31,7 +31,7 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 	var lowercaseChars = [Character]()
 	var uppercaseChars = [Character]()
 	var numberChars = [Character]()
-	var symbolChars = [Character]()
+	var symbolChars = [Character]() //TODO allow custom list of symbols
 	let lowercaseVowelChars = ["a", "e", "i", "o", "u", "y"]
 	let lowercaseConsonantChars = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z"]
 	let uppercaseVowelChars = ["A", "E", "I", "O", "U", "Y"]
@@ -162,7 +162,7 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 		let content = try! String(contentsOfFile: path, encoding: String.Encoding.utf8) // unsafe forced try
 		let words = content.components(separatedBy: "\n")
 		
-		let numberOfWords = strength + 3
+		let numberOfWords: Int = strength + 3
 		
 		var output = ""
 		for i in 1...numberOfWords {
@@ -170,7 +170,23 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 			output += i != numberOfWords ? " " : ""
 		}
 		
-		setEntropy(log2(pow(1000.0,  Double(numberOfWords))))
+		var combos: Double = pow(1000.0,  Double(numberOfWords))
+		
+		if includeUppercase {
+			let char: String = output.first!.uppercased()
+			output = char + output.dropFirst()
+			combos *= 2
+		}
+		if includeNumbers {
+			output.append(getRandomCharacter(false, false, true, false))
+			combos *= 10
+		}
+		if includeSymbols {
+			output.append(getRandomCharacter(false, false, false, true))
+			combos *= 32
+		}
+		
+		setEntropy(log2(combos))
 		
 		return output
 	}
