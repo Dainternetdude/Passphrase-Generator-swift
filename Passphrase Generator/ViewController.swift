@@ -32,10 +32,18 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 	var uppercaseChars = [Character]()
 	var numberChars = [Character]()
 	var symbolChars = [Character]() //TODO allow custom list of symbols
-	let lowercaseVowelChars = ["a", "e", "i", "o", "u", "y"]
-	let lowercaseConsonantChars = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z"]
-	let uppercaseVowelChars = ["A", "E", "I", "O", "U", "Y"]
-	let uppercaseConsonantChars = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Z"]
+	let lowercaseVowelChars: [Character] = ["a", "e", "i", "o", "u", "y"]
+	let lowercaseConsonantChars: [Character] = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z"]
+	let uppercaseVowelChars: [Character] = ["A", "E", "I", "O", "U", "Y"]
+	let uppercaseConsonantChars: [Character] = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Z"]
+	
+	enum CharType { //TODO refactoring of getRandomCharacter method
+		case lowercaseLetter, uppercaseLetter, letter, number, symbol
+	}
+	
+	enum Language { //TODO i18n
+		case english
+	}
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -192,8 +200,65 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 	}
 	
 	func generateReadablePassphrase(_ strength: Int) -> String {
-		// generate readable passphrase
-		return "hello readable world"
+		
+		var output: String = ""
+		var vowelChars = lowercaseVowelChars
+		var consonantChars = lowercaseConsonantChars
+		let blocks: Int = strength + 2
+		
+		if includeUppercase {
+			vowelChars.append(contentsOf: uppercaseVowelChars)
+			consonantChars.append(contentsOf: uppercaseConsonantChars)
+		}
+		
+		for i in 1...blocks {
+			for j in 1...6 {
+				let char: Character = (j == 2 || j == 5) ? vowelChars.randomElement()! : consonantChars.randomElement()!
+				output.append(char)
+			}
+			output += i != blocks ? "-" : ""
+		}
+		
+		let vowelPossibilities = vowelChars.count + includeUppercase.intValue * vowelChars.count
+		let vowelsTotal = blocks * 2
+		let consonantPossibilities = consonantChars.count + includeUppercase.intValue * consonantChars.count
+		let consonantsTotal = blocks * 4
+		var combos: Double = pow(Double(vowelPossibilities), Double(vowelsTotal)) * pow(Double(consonantPossibilities), Double(consonantsTotal))
+		
+		var numPos: Int = -1
+		if includeNumbers {
+			numPos = Int.random(in: 1...(blocks * 2))
+			
+			let isFirst = numPos % 2 == 0 ? false : true
+			let block = (numPos + 1) / 2
+			let rawPos = block * 7 - 2 - isFirst.intValue * 5
+			let randomNum = getRandomCharacter(false, false, true, false)
+			
+			output = String(output.prefix(rawPos)) + String(randomNum) + String(output.dropFirst(rawPos + 1))
+			
+			combos /= Double(consonantPossibilities)
+			combos *= Double(numberChars.count)
+		}
+		
+		if includeSymbols {
+			var symbolPos = Int.random(in: 1...(blocks * 2))
+			symbolPos -= (symbolPos == numPos).intValue
+			symbolPos = symbolPos == 0 ? blocks * 2 : symbolPos
+			
+			let isFirst = symbolPos % 2 == 0 ? false : true
+			let block = (symbolPos + 1) / 2
+			let rawPos = block * 7 - 2 - isFirst.intValue * 5
+			let randomSymbol = getRandomCharacter(false, false, false, true)
+			
+			output = String(output.prefix(rawPos)) + String(randomSymbol) + String(output.dropFirst(rawPos + 1))
+			
+			combos /= Double(consonantPossibilities)
+			combos *= Double(symbolChars.count)
+		}
+		
+		setEntropy(log2(combos))
+		
+		return output
 	}
 	
 	func generateRandomPassphrase(_ strength: Int) -> String {
@@ -253,10 +318,10 @@ class ViewController: NSViewController, NSTextFieldDelegate {
 			}
 		}
 		
-		let a = 26 + includeUppercase.intValue * 26 + includeNumbers.intValue * 10 + includeSymbols.intValue * 32
-		let b = blocks * 6
-		let c: Double = pow(Double(a), Double(b))
-		setEntropy(log2(c))
+		let possibilities = 26 + includeUppercase.intValue * 26 + includeNumbers.intValue * 10 + includeSymbols.intValue * 32
+		let charsTotal = blocks * 6
+		let combos: Double = pow(Double(possibilities), Double(charsTotal))
+		setEntropy(log2(combos))
 		
 		return output
 	}

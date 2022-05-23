@@ -38,6 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		popoverView.contentViewController = vc
 		popoverView.behavior = .transient
 		popoverView.show(relativeTo: statusItem.button!.bounds, of: statusItem.button!, preferredEdge: .maxY)
+		vc.view.window?.makeKey()
 	}
 }
 
