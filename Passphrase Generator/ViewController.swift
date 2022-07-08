@@ -23,7 +23,7 @@ class ViewController: NSViewController, NSTextFieldDelegate {
     var includeUppercase = true
     var includeNumbers = true
     var includeSymbols = true
-    var strength: PassphraseGenerator.PassphraseStrength = .defaultt
+    var strength: PassphraseGenerator.PassphraseStrength = .`default`
     var type: PassphraseGenerator.PassphraseType = .readable
 	
     override func viewDidLoad() {
@@ -94,14 +94,14 @@ class ViewController: NSViewController, NSTextFieldDelegate {
         case 0:
             strength = .weak
         case 1:
-            strength = .defaultt
+            strength = .`default`
         case 2:
             strength = .strong
         case 3:
             strength = .veryStrong
             
         default:
-            strength = .defaultt
+            strength = .`default`
         }
 		
         regeneratePassphrase()

@@ -14,15 +14,19 @@ class PassphraseGenerator {
     }
     
     public enum PassphraseStrength: Int {
-        case weak, defaultt, strong, veryStrong // "default" is a reserved keyword so I use "defaultt"
+        case weak, `default`, strong, veryStrong // "default" is a reserved keyword so the swift-recommended workaround is "`default`"
     }
     
-    enum CharType { //TODO refactoring of getRandomCharacter method
-        case lowercaseLetter, uppercaseLetter, letter, number, symbol
+    enum CharType {
+        case lowercaseLetter, uppercaseLetter, letter, number, symbol, any
     }
     
-    enum Language { //TODO i18n
+    enum Language { //TODO: i18n
         case english
+    }
+    
+    enum PassphraseGeneratorError: Error {
+        case noCharTypeError
     }
     
     
@@ -30,13 +34,13 @@ class PassphraseGenerator {
     private static let lowercaseConsonantChars: [Character] = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z"]
     private static let uppercaseVowelChars: [Character] = ["A", "E", "I", "O", "U", "Y"]
     private static let uppercaseConsonantChars: [Character] = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Z"]
-    private static var lowercaseChars = lowercaseVowelChars + lowercaseConsonantChars
-    private static var uppercaseChars = uppercaseVowelChars + uppercaseConsonantChars
-    private static var numberChars: [Character] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    private static var symbolChars: [Character] = ["!", "\"", "#", "$", "%", "&", "\'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"] //TODO allow custom list of symbols
+    private static let lowercaseChars = lowercaseVowelChars + lowercaseConsonantChars
+    private static let uppercaseChars = uppercaseVowelChars + uppercaseConsonantChars
+    private static let numberChars: [Character] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    private static let symbolChars: [Character] = ["!", "\"", "#", "$", "%", "&", "\'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"] //TODO: allow custom list of symbols
 
     
-    public static func generatePassphrase(strength: PassphraseStrength = PassphraseStrength.defaultt, type: PassphraseType = PassphraseType.randomized, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> String {
+    public static func generatePassphrase(strength: PassphraseStrength = PassphraseStrength.`default`, type: PassphraseType = PassphraseType.randomized, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> String {
         
         switch type {
         case .dictionary:
@@ -50,7 +54,7 @@ class PassphraseGenerator {
         //calculateEntropy()
     }
     
-    private static func generateDictionaryPassphrase(strength: PassphraseStrength = PassphraseStrength.defaultt, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> String {
+    private static func generateDictionaryPassphrase(strength: PassphraseStrength = PassphraseStrength.`default`, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> String {
         let path = Bundle.main.path(forResource: "wordlist", ofType: "txt")!
         let content = try! String(contentsOfFile: path, encoding: String.Encoding.utf8) // unsafe forced try
         let wordList = content.components(separatedBy: "\n")
@@ -59,7 +63,7 @@ class PassphraseGenerator {
         switch strength {
         case .weak:
             numberOfWords = 3
-        case .defaultt:
+        case .`default`:
             numberOfWords = 4
         case .strong:
             numberOfWords = 5
@@ -79,16 +83,16 @@ class PassphraseGenerator {
             output = char + output.dropFirst()
         }
         if numbers {
-            output.append(getRandomCharacter(false, false, true, false))
+            output.append(getRandomCharacter(charType: .number))
         }
         if symbols {
-            output.append(getRandomCharacter(false, false, false, true))
+            output.append(getRandomCharacter(charType: .symbol))
         }
         
         return output
     }
     
-    private static func generateReadablePassphrase(strength: PassphraseStrength = PassphraseStrength.defaultt, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> String {
+    private static func generateReadablePassphrase(strength: PassphraseStrength = PassphraseStrength.`default`, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> String {
         
         var output: String = ""
         var vowelChars = lowercaseVowelChars
@@ -98,7 +102,7 @@ class PassphraseGenerator {
         switch strength {
         case .weak:
             blocks = 2
-        case .defaultt:
+        case .`default`:
             blocks = 3
         case .strong:
             blocks = 4
@@ -126,7 +130,7 @@ class PassphraseGenerator {
             let isFirst = numPos % 2 == 0 ? false : true
             let block = (numPos + 1) / 2
             let rawPos = block * 7 - 2 - isFirst.intValue * 5
-            let randomNum = getRandomCharacter(false, false, true, false)
+            let randomNum = getRandomCharacter(charType: .number)
             
             output = String(output.prefix(rawPos)) + String(randomNum) + String(output.dropFirst(rawPos + 1))
         }
@@ -139,7 +143,7 @@ class PassphraseGenerator {
             let isFirst = symbolPos % 2 == 0 ? false : true
             let block = (symbolPos + 1) / 2
             let rawPos = block * 7 - 2 - isFirst.intValue * 5
-            let randomSymbol = getRandomCharacter(false, false, false, true)
+            let randomSymbol = getRandomCharacter(charType: .symbol)
             
             output = String(output.prefix(rawPos)) + String(randomSymbol) + String(output.dropFirst(rawPos + 1))
         }
@@ -147,13 +151,13 @@ class PassphraseGenerator {
         return output
     }
     
-    private static func generateRandomPassphrase(strength: PassphraseStrength = PassphraseStrength.defaultt, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> String {
+    private static func generateRandomPassphrase(strength: PassphraseStrength = PassphraseStrength.`default`, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> String {
                         
         let blocks: Int
         switch strength {
         case .weak:
             blocks = 2
-        case .defaultt:
+        case .`default`:
             blocks = 3
         case .strong:
             blocks = 4
@@ -165,7 +169,7 @@ class PassphraseGenerator {
 
         for i in 1...blocks {
             for _ in 1...6 { // underscore just makes an anonymous variable (since we never use it its only an iterator)
-                let char: Character = getRandomCharacter(true, uppercase, numbers, symbols)
+                let char: Character = try! getRandomCharacter(lowercase: true, uppercase: uppercase, numbers: numbers, symbols: symbols)
                 output.append(char)
             }
             output += i != blocks ? "-" : ""
@@ -182,7 +186,7 @@ class PassphraseGenerator {
             }
             
             if !hasUppercase {
-                output.append(getRandomCharacter(false, true, false, false))
+                output.append(getRandomCharacter(charType: .uppercaseLetter))
             }
         }
         if numbers {
@@ -195,7 +199,7 @@ class PassphraseGenerator {
             }
             
             if !hasNumbers {
-                output.append(getRandomCharacter(false, false, true, false))
+                output.append(getRandomCharacter(charType: .number))
             }
         }
         if symbols {
@@ -208,33 +212,72 @@ class PassphraseGenerator {
             }
             
             if !hasSymbols {
-                output.append(getRandomCharacter(false, false, false, true))
+                output.append(getRandomCharacter(charType: .symbol))
             }
         }
         
         return output
     }
     
-    private static func getRandomCharacter(_ lowercase: Bool, _ uppercase: Bool, _ numbers: Bool, _ symbols: Bool) -> Character {
-        let num = Int.random(in: 0x21...0x7E) // '!' to '~' (all non-formatting characters on US keyboard except space
-                                                // AKA lowercase + uppercase + numbers + symbols
+    private static func getRandomCharacter(charType: CharType) -> Character {
         
-        if !lowercase && lowercaseChars.contains(num.toChar()) {
-                return getRandomCharacter(lowercase, uppercase, numbers, symbols)
+        let lowercase: Bool
+        let uppercase: Bool
+        let numbers:   Bool
+        let symbols:   Bool
+        
+        switch charType {
+        case .letter:
+            lowercase = true
+            uppercase = true
+            numbers = false
+            symbols = false
+        case .lowercaseLetter:
+            lowercase = true
+            uppercase = false
+            numbers = false
+            symbols = false
+        case .uppercaseLetter:
+            lowercase = false
+            uppercase = true
+            numbers = false
+            symbols = false
+        case .number:
+            lowercase = false
+            uppercase = false
+            numbers = true
+            symbols = false
+        case .symbol:
+            lowercase = false
+            uppercase = false
+            numbers = false
+            symbols = true
+        case .any:
+            lowercase = true
+            uppercase = true
+            numbers = true
+            symbols = true
+        } // be sure to make at least one of the parameters true when adding new CharTypes
+        
+        return try! getRandomCharacter(lowercase: lowercase, uppercase: uppercase, numbers: numbers, symbols: symbols)
+    }
+    
+    private static func getRandomCharacter(lowercase: Bool, uppercase: Bool, numbers: Bool, symbols: Bool) throws -> Character {
+        
+        guard lowercase.intValue + uppercase.intValue + numbers.intValue + symbols.intValue > 0 else {
+            throw PassphraseGeneratorError.noCharTypeError
         }
-        if !uppercase && uppercaseChars.contains(num.toChar()) {
-                return getRandomCharacter(lowercase, uppercase, numbers, symbols)
-        }
-        if !numbers && numberChars.contains(num.toChar()) {
-                return getRandomCharacter(lowercase, uppercase, numbers, symbols)
-        }
-        if !symbols && symbolChars.contains(num.toChar()) {
-                return getRandomCharacter(lowercase, uppercase, numbers, symbols)
-        }
-        return num.toChar()
+        
+        var alphabet: [Character] = [Character]()
+        alphabet += lowercase ? lowercaseChars : []
+        alphabet += uppercase ? uppercaseChars : []
+        alphabet += numbers ? numberChars : []
+        alphabet += symbols ? symbolChars : []
+        
+        return alphabet.randomElement()! // empty array condition handled by the guard at the beginning of the method
     }
 
-    public static func getEntropy(strength: PassphraseStrength = PassphraseStrength.defaultt, type: PassphraseType = PassphraseType.randomized, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> Double {
+    public static func getEntropy(strength: PassphraseStrength = PassphraseStrength.`default`, type: PassphraseType = PassphraseType.randomized, uppercase: Bool = false, numbers: Bool = false, symbols: Bool = false) -> Double {
         
         switch type {
         case .dictionary:
@@ -242,7 +285,7 @@ class PassphraseGenerator {
             switch strength {
             case .weak:
                 numberOfWords = 3
-            case .defaultt:
+            case .`default`:
                 numberOfWords = 4
             case .strong:
                 numberOfWords = 5
@@ -250,7 +293,7 @@ class PassphraseGenerator {
                 numberOfWords = 6
             }
             
-            var combos: Double = pow(1000.0,  Double(numberOfWords)) // we choose from a list of 1000 words
+            var combos: Double = pow(1000.0,  Double(numberOfWords)) // 1000.0 because we choose from a list of 1000 words
             
             if uppercase {
                 combos *= 2
@@ -271,7 +314,7 @@ class PassphraseGenerator {
             switch strength {
             case .weak:
                 blocks = 2
-            case .defaultt:
+            case .`default`:
                 blocks = 3
             case .strong:
                 blocks = 4
@@ -306,7 +349,7 @@ class PassphraseGenerator {
             switch strength {
             case .weak:
                 blocks = 2
-            case .defaultt:
+            case .`default`:
                 blocks = 3
             case .strong:
                 blocks = 4
@@ -323,24 +366,9 @@ class PassphraseGenerator {
     }
 }
 
-// extension to integer class
-extension Int {
-    // returns the int as a char (duh)
-    func toChar() -> Character {
-        // u have to do some janky stuff because swift
-        return Character(UnicodeScalar(self)!)
-        // contains a force unwrap which i should fix later but whatever
-    }
-    
-    // convert int to boolean C-style
-    var boolValue: Bool {
-        return self != 0
-    }
-}
-
 // extension to boolean class
 extension Bool {
-    // convert boolean to int C-style
+    // convert boolean to int like low-level languages
     // returns 1 if true, 0 if false
     var intValue: Int {
         return self ? 1 : 0
