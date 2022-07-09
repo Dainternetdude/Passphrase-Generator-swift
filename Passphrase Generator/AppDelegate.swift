@@ -10,12 +10,16 @@ import Cocoa
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-
+	let statusItem = NSStatusBar.system.statusItem(withLength: 18.0)
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-		statusItem.button?.title = "🅿"
+        
+        statusItem.button?.image = #imageLiteral(resourceName: "StatusBarIcon")
+        statusItem.button?.image?.size = NSSize(width: 18.0, height: 18.0)
+        
+		statusItem.button?.image?.isTemplate = true // makes the image work with light & dark mode
+        
 		statusItem.button?.target = self
 		statusItem.button?.action = #selector(showSettings)
     }
