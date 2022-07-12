@@ -23,8 +23,8 @@ class ViewController: NSViewController, NSTextFieldDelegate {
     var includeUppercase = true
     var includeNumbers = true
     var includeSymbols = true
-    var strength: PassphraseGenerator.PassphraseStrength = .`default`
-    var type: PassphraseGenerator.PassphraseType = .readable
+    var strength: PassphraseStrength = .`default`
+    var type: PassphraseType = .readable
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,6 +123,9 @@ class ViewController: NSViewController, NSTextFieldDelegate {
         regeneratePassphrase()
     }
     
+    /*
+     basically just rounds the entropy before applying it to the text field
+     */
     private func setEntropy(_ entropy: Double) {
         var ent = entropy * 10
         ent = ent.rounded()
@@ -131,7 +134,7 @@ class ViewController: NSViewController, NSTextFieldDelegate {
     }
     
     func regeneratePassphrase() {
-        outputField.stringValue = PassphraseGenerator.generatePassphrase(strength: strength, type: type, uppercase: includeUppercase, numbers: includeNumbers, symbols: includeSymbols)
-        setEntropy(PassphraseGenerator.getEntropy(strength: strength, type: type, uppercase: includeUppercase, numbers: includeNumbers, symbols: includeSymbols))
+        outputField.stringValue = generatePassphrase(strength: strength, type: type, uppercase: includeUppercase, numbers: includeNumbers, symbols: includeSymbols)
+        setEntropy(getEntropy(strength: strength, type: type, uppercase: includeUppercase, numbers: includeNumbers, symbols: includeSymbols))
     }
 }

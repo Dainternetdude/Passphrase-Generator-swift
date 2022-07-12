@@ -11,7 +11,7 @@
 		E83C6FED2813360100575117 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E83C6FEC2813360100575117 /* ViewController.swift */; };
 		E83C6FEF2813360600575117 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E83C6FEE2813360600575117 /* Assets.xcassets */; };
 		E83C6FF22813360600575117 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E83C6FF02813360600575117 /* Main.storyboard */; };
-		E86F4DE12876667C00956329 /* PassphraseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86F4DE02876667C00956329 /* PassphraseGenerator.swift */; };
+		E86F4DE12876667C00956329 /* PassphraseGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86F4DE02876667C00956329 /* PassphraseGeneration.swift */; };
 		E8AF708A2838B49C00355EEF /* wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = E8AF70892838B49C00355EEF /* wordlist.txt */; };
 /* End PBXBuildFile section */
 
@@ -23,7 +23,7 @@
 		E83C6FF12813360600575117 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E83C6FF32813360600575117 /* Passphrase_Generator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Passphrase_Generator.entitlements; sourceTree = "<group>"; };
 		E83C6FF92813367400575117 /* Passphrase-Generator-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Passphrase-Generator-Info.plist"; sourceTree = SOURCE_ROOT; };
-		E86F4DE02876667C00956329 /* PassphraseGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseGenerator.swift; sourceTree = "<group>"; };
+		E86F4DE02876667C00956329 /* PassphraseGeneration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseGeneration.swift; sourceTree = "<group>"; };
 		E8AF70892838B49C00355EEF /* wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wordlist.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,7 +64,7 @@
 				E83C6FF02813360600575117 /* Main.storyboard */,
 				E83C6FF32813360600575117 /* Passphrase_Generator.entitlements */,
 				E8AF70892838B49C00355EEF /* wordlist.txt */,
-				E86F4DE02876667C00956329 /* PassphraseGenerator.swift */,
+				E86F4DE02876667C00956329 /* PassphraseGeneration.swift */,
 			);
 			path = "Passphrase Generator";
 			sourceTree = "<group>";
@@ -140,7 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E86F4DE12876667C00956329 /* PassphraseGenerator.swift in Sources */,
+				E86F4DE12876667C00956329 /* PassphraseGeneration.swift in Sources */,
 				E83C6FED2813360100575117 /* ViewController.swift in Sources */,
 				E83C6FEB2813360100575117 /* AppDelegate.swift in Sources */,
 			);
