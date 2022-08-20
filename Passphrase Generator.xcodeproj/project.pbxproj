@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E83C6FEB2813360100575117 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E83C6FEA2813360100575117 /* AppDelegate.swift */; };
-		E83C6FED2813360100575117 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E83C6FEC2813360100575117 /* ViewController.swift */; };
+		E83C6FED2813360100575117 /* StatusBarPopoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E83C6FEC2813360100575117 /* StatusBarPopoutViewController.swift */; };
 		E83C6FEF2813360600575117 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E83C6FEE2813360600575117 /* Assets.xcassets */; };
 		E83C6FF22813360600575117 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E83C6FF02813360600575117 /* Main.storyboard */; };
 		E86F4DE12876667C00956329 /* PassphraseGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86F4DE02876667C00956329 /* PassphraseGeneration.swift */; };
@@ -18,7 +18,7 @@
 /* Begin PBXFileReference section */
 		E83C6FE72813360100575117 /* Passphrase Generator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Passphrase Generator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E83C6FEA2813360100575117 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E83C6FEC2813360100575117 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E83C6FEC2813360100575117 /* StatusBarPopoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarPopoutViewController.swift; sourceTree = "<group>"; };
 		E83C6FEE2813360600575117 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E83C6FF12813360600575117 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E83C6FF32813360600575117 /* Passphrase_Generator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Passphrase_Generator.entitlements; sourceTree = "<group>"; };
@@ -59,7 +59,7 @@
 			children = (
 				E83C6FF92813367400575117 /* Passphrase-Generator-Info.plist */,
 				E83C6FEA2813360100575117 /* AppDelegate.swift */,
-				E83C6FEC2813360100575117 /* ViewController.swift */,
+				E83C6FEC2813360100575117 /* StatusBarPopoutViewController.swift */,
 				E83C6FEE2813360600575117 /* Assets.xcassets */,
 				E83C6FF02813360600575117 /* Main.storyboard */,
 				E83C6FF32813360600575117 /* Passphrase_Generator.entitlements */,
@@ -141,7 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E86F4DE12876667C00956329 /* PassphraseGeneration.swift in Sources */,
-				E83C6FED2813360100575117 /* ViewController.swift in Sources */,
+				E83C6FED2813360100575117 /* StatusBarPopoutViewController.swift in Sources */,
 				E83C6FEB2813360100575117 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,7 +295,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "dainternetdude.Passphrase-Generator";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -325,7 +326,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "dainternetdude.Passphrase-Generator";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

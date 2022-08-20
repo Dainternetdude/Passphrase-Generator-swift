@@ -9,7 +9,7 @@ import Cocoa
 import Foundation
 
 // should be called MyViewController or something
-class ViewController: NSViewController, NSTextFieldDelegate {
+class StatusBarPopoutViewController: NSViewController, NSTextFieldDelegate {
 	
 	
 	@IBOutlet weak var outputField: NSTextField!

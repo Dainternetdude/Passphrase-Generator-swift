@@ -34,7 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	@objc func showSettings() {
 		let storyBoard = NSStoryboard(name: "Main", bundle: nil)
-		guard let vc = storyBoard.instantiateController(withIdentifier: "ViewController") as? ViewController else {
+		guard let vc = storyBoard.instantiateController(withIdentifier: "ViewController") as? StatusBarPopoutViewController else {
 			fatalError("Unable to find ViewController in the storyboard")
 		}
 		

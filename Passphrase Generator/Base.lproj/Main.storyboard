@@ -680,10 +680,10 @@
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
         </scene>
-        <!--View Controller-->
+        <!--Status Bar Popout View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController storyboardIdentifier="ViewController" showSeguePresentationStyle="single" id="XfG-lQ-9wD" customClass="ViewController" customModule="Passphrase_Generator" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" showSeguePresentationStyle="single" id="XfG-lQ-9wD" customClass="StatusBarPopoutViewController" customModule="Passphrase_Generator" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="481" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -708,7 +708,7 @@
                             </button>
                             <button verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Glh-5f-Rgu">
                                 <rect key="frame" x="18" y="154" width="82" height="18"/>
-                                <buttonCell key="cell" type="check" title="Numbers" bezelStyle="regularSquare" imagePosition="left" state="on" toolTip="Include numbers in the passphrase" inset="2" id="NMi-V6-uba">
+                                <buttonCell key="cell" type="check" title="Numbers" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="NMi-V6-uba">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -768,7 +768,7 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7ZF-8v-paN">
+                            <segmentedControl toolTip="Passphrase type" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7ZF-8v-paN">
                                 <rect key="frame" x="18" y="60" width="445" height="24"/>
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fillEqually" style="rounded" trackingMode="selectOne" id="h4F-GF-adq">
                                     <font key="font" metaFont="system"/>
@@ -794,7 +794,7 @@
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Re-oc-ERn">
                                 <rect key="frame" x="244" y="13" width="224" height="32"/>
-                                <buttonCell key="cell" type="push" title="Advanced..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hug-vG-xYN">
+                                <buttonCell key="cell" type="push" title="Advanced..." bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hug-vG-xYN">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
